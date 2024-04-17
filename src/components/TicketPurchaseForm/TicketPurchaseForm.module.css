@@ -1,0 +1,32 @@
+.container {
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid;
+  border-width: 2px;
+  border-color: cadetblue;
+  border-radius: 1.2rem;
+  margin: 2rem;
+  padding: 0.2rem;
+}
+
+.place-number {
+  font-weight: bold;
+  margin: 0.4rem;
+}
+
+.reserve-button {
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 2rem;
+  border-radius: 5px;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+.reserve-button:hover {
+  opacity: 0.8;
+  color: #fff;
+  background: cornflowerblue;
+}
