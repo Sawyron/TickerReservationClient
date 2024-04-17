@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-console.log(import.meta.env.RESARVATION_BASEURL);
-
 const baseUrl =
-  import.meta.env.RESARVATION_BASEURL || 'http://localhost:5156/api';
+  import.meta.env.VITE_RESERVATION_BASE_URL || 'http://localhost:5156/api';
 
 const client = axios.create({
   withCredentials: true,
