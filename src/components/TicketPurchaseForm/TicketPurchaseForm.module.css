@@ -7,9 +7,9 @@
   border: solid;
   border-width: 2px;
   border-color: cadetblue;
-  border-radius: 1.2rem;
+  border-radius: 0.2rem;
   margin: 2rem;
-  padding: 0.2rem;
+  padding: 0.6rem;
 }
 
 .place-number {

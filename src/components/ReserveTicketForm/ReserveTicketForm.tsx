@@ -8,8 +8,8 @@ import TicketPurchaseForm from '../TicketPurchaseForm/TicketPurchaseForm';
 import classes from './ReserveTicketForm.module.css';
 
 const ReserveTicketsForm: FC = () => {
-  const [trainId, setTrainId] = useState('');
-  const [typeId, setTypeId] = useState('');
+  const [selectedTrainId, setSelectedTrainId] = useState('');
+  const [selectedTypeId, setSelectedTypeId] = useState('');
   const [trains, setTrains] = useState<ITrainResponse[]>([]);
   const [ticketTypes, setTicketTypes] = useState<ITicketTypeResponse[]>([]);
   const [tickets, setTickets] = useState<ITicketResponse[]>([]);
@@ -24,8 +24,8 @@ const ReserveTicketsForm: FC = () => {
       const [trainData, typeData] = await Promise.all(requests);
       setTrains(trainData.data);
       setTicketTypes(typeData.data);
-      setTrainId(trainData.data[0]?.id ?? '');
-      setTypeId(typeData.data[0]?.id ?? '');
+      setSelectedTrainId(trainData.data[0]?.id ?? '');
+      setSelectedTypeId(typeData.data[0]?.id ?? '');
     } catch (error) {
       console.error(error);
       navigate('/login');
@@ -46,7 +46,10 @@ const ReserveTicketsForm: FC = () => {
 
   const handleFind = async () => {
     try {
-      const response = await ReservationService.getFreeTickets(trainId, typeId);
+      const response = await ReservationService.getFreeTickets(
+        selectedTrainId,
+        selectedTypeId
+      );
       setTickets(response.data);
     } catch (error) {
       console.log(error);
@@ -59,21 +62,26 @@ const ReserveTicketsForm: FC = () => {
 
   return (
     <div>
-      <select onChange={e => setTrainId(e.target.value)}>
-        {trains.map(train => (
-          <option key={train.id} value={train.id}>
-            {train.name}
-          </option>
-        ))}
-      </select>
-      <select value={typeId} onChange={e => setTypeId(e.target.value)}>
-        {ticketTypes.map(ticketType => (
-          <option key={ticketType.id} value={ticketType.id}>
-            {ticketType.name}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleFind}>Find</button>
+      <div className={classes['select-container']}>
+        <select onChange={e => setSelectedTrainId(e.target.value)}>
+          {trains.map(train => (
+            <option key={train.id} value={train.id}>
+              {train.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedTypeId}
+          onChange={e => setSelectedTypeId(e.target.value)}
+        >
+          {ticketTypes.map(ticketType => (
+            <option key={ticketType.id} value={ticketType.id}>
+              {ticketType.name}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleFind}>Find</button>
+      </div>
       <div className={classes['ticket-container']}>
         {tickets.map(ticket => (
           <TicketPurchaseForm

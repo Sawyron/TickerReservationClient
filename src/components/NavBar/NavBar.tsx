@@ -1,22 +1,30 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import './NavBar.css';
+import classes from './NavBar.module.css';
 
 const NavBar: FC = () => {
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink to="/">Trains</NavLink>
+    <nav className={classes.navbar}>
+      <ul className={classes.router}>
+        <li className={classes.router}>
+          <NavLink className={classes.router} to="/">
+            Trains
+          </NavLink>
         </li>
         <li>
-          <NavLink to="login">Login</NavLink>
+          <NavLink className={classes.router} to="login">
+            Login
+          </NavLink>
         </li>
         <li>
-          <NavLink to="reserve">Reserve</NavLink>
+          <NavLink className={classes.router} to="reserve">
+            Reserve
+          </NavLink>
         </li>
         <li>
-          <NavLink to="my-tickets">My tickets</NavLink>
+          <NavLink className={classes.router} to="my-tickets">
+            My tickets
+          </NavLink>
         </li>
       </ul>
     </nav>
