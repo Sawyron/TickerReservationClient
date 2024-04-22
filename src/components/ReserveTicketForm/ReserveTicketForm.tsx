@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { ITicketResponse } from '../../types/ITicketResponse';
 import TicketPurchaseForm from '../TicketPurchaseForm/TicketPurchaseForm';
 import classes from './ReserveTicketForm.module.css';
+import axios, { AxiosError } from 'axios';
+import Modal from '../Modal/Modal';
 
 const ReserveTicketsForm: FC = () => {
   const [selectedTrainId, setSelectedTrainId] = useState('');
@@ -13,6 +15,8 @@ const ReserveTicketsForm: FC = () => {
   const [trains, setTrains] = useState<ITrainResponse[]>([]);
   const [ticketTypes, setTicketTypes] = useState<ITicketTypeResponse[]>([]);
   const [tickets, setTickets] = useState<ITicketResponse[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
   const fetchData = useCallback(async () => {
@@ -39,6 +43,14 @@ const ReserveTicketsForm: FC = () => {
         navigate('/my-tickets');
       } catch (error) {
         console.error(error);
+        if (!axios.isAxiosError(error)) {
+          return;
+        }
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status == 400) {
+          setErrorMessage(JSON.stringify(error.response?.data, null, 4));
+          setIsModalOpen(true);
+        }
       }
     },
     [navigate]
@@ -54,6 +66,11 @@ const ReserveTicketsForm: FC = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    navigate(0);
   };
 
   useEffect(() => {
@@ -82,6 +99,12 @@ const ReserveTicketsForm: FC = () => {
         </select>
         <button onClick={handleFind}>Find</button>
       </div>
+      <Modal isOpen={isModalOpen}>
+        <>
+          <pre>{errorMessage}</pre>
+          <button onClick={handleCloseModal}>Close</button>
+        </>
+      </Modal>
       <div className={classes['ticket-container']}>
         {tickets.map(ticket => (
           <TicketPurchaseForm

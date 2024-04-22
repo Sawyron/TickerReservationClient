@@ -25,8 +25,8 @@ const TrainPage: FC = () => {
   return (
     <ul>
       {trains.map(train => (
-        <li>
-          <Train key={train.id} name={train.name} />
+        <li key={train.id}>
+          <Train name={train.name} />
         </li>
       ))}
     </ul>
